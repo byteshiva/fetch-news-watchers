@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News daily</title>
+  <!-- Include HTMX library -->
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.6.0/dist/htmx.min.js"></script>
+</head>
+<body>
+  <h1>News</h1>
+  <div id="newsContainer" hx-get="/getNews" hx-trigger="every 12s">
+    <table>
+      <thead>
+        <tr>
+          <th>News Watchers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr hx-each="url in this">
+          <td hx-trigger="click" hx-get="${url}" hx-swap="outerHTML">
+            <!-- Click to load article content -->
+            <button>Show Article</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    document.getElementById('newsContainer').addEventListener('htmx:afterSwap', function(event) {
+      // Scroll to the bottom after new content is loaded
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+</body>
+</html>
