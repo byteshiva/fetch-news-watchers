@@ -18,7 +18,7 @@ async function fetchCNNArticles() {
   cnnArticles.push(`<tr><td>${cnntitle}</td></tr>`);
 
   $cnn('body > div.layout-homepage__lite > div > section > div > ul > li').each((index, element) => {
-    if (index < 10) {
+    if (index < 15) {
       const articleHtml = $cnn(element).html();
       const articleWithFullUrl = articleHtml.replace(/href="/g, 'href="https://lite.cnn.com');
       cnnArticles.push(`<tr><td>${articleWithFullUrl}</td></tr>`);
@@ -42,7 +42,7 @@ function fetchHackerNewsArticles(callback) {
       hackerNewsData.push(`<tr><td>${hackernewstitle}</td></tr>`);
 
       titlelineSpans.each((index, element) => {
-        if (index < 10) {
+        if (index < 15) {
           const aTag = $hackerNews(element).find('a').first();
           const aTagHtml = $hackerNews.html(aTag);
           hackerNewsData.push(`<tr><td>${aTagHtml}</td></tr>`);
