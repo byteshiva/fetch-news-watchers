@@ -18,16 +18,14 @@
   <main>
   <div id="newsContainer" hx-get="/getNews">
     <table>
-      <thead>
-        <tr>
-          <th>News Watchers</th>
-        </tr>
-      </thead>
       <tbody>
-        <tr hx-each="url in this">
-          <td hx-trigger="click" hx-get="${url}" hx-swap="outerHTML">
+        <!-- <tr hx-each="url in this"> -->
+        <tr>
+          <td hx-trigger="click"  hx-swap="outerHTML">
+	    <!-- <td hx-trigger="click" hx-get="${url}" hx-swap="outerHTML"> -->
             <!-- Click to load article content -->
-            <button class="fetch-button">Show Article
+            <button class="fetch-button">
+Show Article
 	    <img class="htmx-indicator" src="bars.svg" alt="Loading">
 	    </button>
           </td>
