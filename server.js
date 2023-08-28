@@ -38,7 +38,7 @@ function fetchHackerNewsArticles(callback) {
       const titlelineSpans = $hackerNews('span.titleline');
       const hackerNewsData = [];
 
-      hackernewstitle = "News Ycombinator";
+      hackernewstitle = "News 2";
       hackerNewsData.push(`<tr><td>${hackernewstitle}</td></tr>`);
 
       titlelineSpans.each((index, element) => {
