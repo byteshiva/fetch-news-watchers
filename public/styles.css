@@ -1,0 +1,80 @@
+/* Style for the non-loading state */
+.fetch-button {
+	background-color: #4285F4; /* Material Design Blue 500 */
+	color: white;
+}
+
+/* Style for the loading state */
+.fetch-button.hx-trigger-click:disabled {
+	background-color: #80BFFF; /* Lighter shade of blue */
+	color: black;
+}
+
+/* Style for the spinner SVG */
+.htmx-indicator {
+	width: 20px; /* Adjust width as needed */
+	height: 20px; /* Adjust height as needed */
+	margin-left: 10px; /* Add margin for spacing */
+	vertical-align: middle; /* Align vertically */
+}
+
+/* Style for the table */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+th, td {
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+
+th {
+	background-color: #FF8A65; /* Material Design Deep Orange 200 for header */
+	color: white;
+	font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+	font-weight: 700; /* Bold font weight */
+	height: 30px; /* Adjust header height */
+}
+
+td {
+	background-color: #FFE0B2; /* Lighter shade of Deep Orange for cells */
+	height: 25px; /* Adjust cell height */
+}
+
+tr:hover {
+	background-color: #FFCC80; /* Lighter shade of hover color */
+}
+
+tfoot {
+	background-color: #FF8A65; /* Material Design Deep Orange 200 for footer */
+	color: white;
+	height: 30px; /* Adjust footer height */
+}
+
+/* Flexbox styling for center alignment */
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+}
+
+main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+header, footer {
+	width: 100%;
+	background-color: #4285F4; /* Material Design Blue 500 for header and footer */
+	color: white;
+	padding: 1px;
+	text-align: center;
+}

@@ -3,12 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News daily</title>
+  <title>OnePress: Pressing the Latest News Together</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+  <link rel="stylesheet" href="/styles.css"> <!-- Link to your external CSS file -->
+  <link rel="icon" type="image/png" href="leaves.png"> <!-- Replace "icon.png" with your icon's file name -->
   <!-- Include HTMX library -->
   <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.6.0/dist/htmx.min.js"></script>
 </head>
 <body>
-  <h1>News</h1>
+ <header>
+    <h1>News Aggregator</h1>
+    <p>Stay Updated with Latest News from Various Sources</p>
+  </header>
+  <main>
   <div id="newsContainer" hx-get="/getNews">
     <table>
       <thead>
@@ -20,12 +27,18 @@
         <tr hx-each="url in this">
           <td hx-trigger="click" hx-get="${url}" hx-swap="outerHTML">
             <!-- Click to load article content -->
-            <button>Show Article</button>
+            <button class="fetch-button">Show Article
+	    <img class="htmx-indicator" src="bars.svg" alt="Loading">
+	    </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  </main>
+  <footer>
+	  <p>&copy; 2023 News Aggregator</p>
+  </footer>
   <script>
     document.getElementById('newsContainer').addEventListener('htmx:afterSwap', function(event) {
       // Scroll to the bottom after new content is loaded

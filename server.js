@@ -114,11 +114,6 @@ app.get('/getNews', async (req, res) => {
         }
       </style>
       <table>
-        <thead>
-          <tr>
-            <th>News Articles from different sources</th>
-          </tr>
-        </thead>
         <tbody>${combinedArticles.join('')}</tbody>
       </table>`;
     res.send(tableContent);
