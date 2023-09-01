@@ -33,7 +33,7 @@ async function fetchCNNArticles() {
   }
 }
 
-// Fetch articles from Hacker News
+// Fetch articles from Hacker News with absolute URLs
 function fetchHackerNewsArticles() {
   return new Promise((resolve, reject) => {
     const hackerNewsUrl = 'https://news.ycombinator.com/';
@@ -50,8 +50,16 @@ function fetchHackerNewsArticles() {
         titlelineSpans.each((index, element) => {
           if (index < 10) {
             const aTag = $hackerNews(element).find('a').first();
-            const aTagHtml = $hackerNews.html(aTag);
-            hackerNewsData.push(`<tr><td>${aTagHtml}</td></tr>`);
+            const href = aTag.attr('href'); // Get the href attribute of the anchor tag
+            const isRelativeUrl = href && !href.startsWith('http') && !href.startsWith('https'); // Check if it's a relative URL
+            const baseUrl = 'https://news.ycombinator.com'; // Base URL for Hacker News
+
+            if (isRelativeUrl) {
+              const absoluteUrl = `${baseUrl}/${href}`; // Create an absolute URL by combining the base URL and the relative URL
+              hackerNewsData.push(`<tr><td><a href="${absoluteUrl}">${aTag.html()}</a></td></tr>`);
+            } else {
+              hackerNewsData.push(`<tr><td><a href="${href}"> ${aTag.html()}</a></td></tr>`);
+            }
           }
         });
 
@@ -76,7 +84,7 @@ async function fetchLobstersArticles() {
   }
 }
 
-// Generate HTML for Lobsters articles
+// Generate HTML for Lobsters articles with absolute URLs
 function generateLobstersHTML(html) {
   const $ = cheerio.load(html);
   const elementsWithClass = $('.u-url');
@@ -85,7 +93,14 @@ function generateLobstersHTML(html) {
     .slice(0, 15)
     .map((i, el) => {
       const link = $(el).attr('href');
-      return `<tr><td><a href="${link}">${$(el).text()}</a></td></tr>`;
+      const isRelativeUrl = link && !link.startsWith('http') && !link.startsWith('https'); // Check if it's a relative URL
+
+      if (isRelativeUrl) {
+        const absoluteUrl = `https://lobste.rs/${link}`; // Use the domain name as the base URL
+        return `<tr><td><a href="${absoluteUrl}">${$(el).text()}</a></td></tr>`;
+      } else {
+        return `<tr><td><a href="${link}">${$(el).text()}</a></td></tr>`;
+      }
     })
     .get()
     .join('');
