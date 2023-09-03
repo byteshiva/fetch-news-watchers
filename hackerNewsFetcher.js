@@ -26,8 +26,10 @@ async function fetchHackerNewsArticles(page) {
     const $hackerNews = cheerio.load(hackerNewsResponse.data);
     const hackerNewsData = [];
 
-    const hackernewstitle = "News 1";
-    hackerNewsData.push(`<tr id="hackernews1"><th>${hackernewstitle}</th></tr>`);
+    if(parseInt(page) == 1) {
+	    const hackernewstitle = "News 1";
+	    hackerNewsData.push(`<tr id="hackernews1"><th>${hackernewstitle}</th></tr>`);
+    }
 
     $hackerNews('span.titleline').each((index, element) => {
       if (index < 100) {
