@@ -56,7 +56,7 @@ async function fetchHackerNewsArticles(page) {
 	  hackerNewsData.push(`
 	    <tr id="replaceMe">
 	      <td>
-		<button class='btn' hx-get="${proxyUrl}"
+		<button class='fetch-button' hx-get="${proxyUrl}"
 			hx-target="#replaceMe"
 			hx-swap="outerHTML">
 		  Load More Articles... <img class="htmx-indicator" src="/bars.svg">
