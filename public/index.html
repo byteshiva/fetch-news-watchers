@@ -15,15 +15,13 @@
     <h1>News Aggregator</h1>
     <p>Stay Updated with Latest News from Various Sources</p>
   </header>
-  <main>
-  <div id="newsContainer" hx-get="/getNews">
+  <main> 
+  <div id="showtable" hx-get="/getNews" hx-target="#newsContainer">
     <table>
       <tbody>
         <!-- <tr hx-each="url in this"> -->
         <tr>
-          <td hx-trigger="click"  hx-swap="outerHTML">
-	    <!-- <td hx-trigger="click" hx-get="${url}" hx-swap="outerHTML"> -->
-            <!-- Click to load article content -->
+          <td hx-trigger="click" hx-swap="outerHTML">
             <button class="fetch-button">
 Show Article
 	    <img class="htmx-indicator" src="bars.svg" alt="Loading">
@@ -32,6 +30,8 @@ Show Article
         </tr>
       </tbody>
     </table>
+  </div>
+  <div id="newsContainer" >
   </div>
   </main>
   <footer>
