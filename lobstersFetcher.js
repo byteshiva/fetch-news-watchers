@@ -1,11 +1,16 @@
-// Import necessary libraries and dependencies
 const axios = require('axios');
 const cheerio = require('cheerio');
+const generateLoadMoreButton = require('./paginationUtils'); // Adjust the path if necessary
 
-// Fetch Lobsters articles
-async function fetchLobstersArticles() {
+// Fetch Lobsters articles with pagination
+async function fetchLobstersArticles(page) {
+
+  if (typeof page !== 'string') {
+    page = '1'; // Set a default page value of '1'
+  }
+
   try {
-    const url = 'https://lobste.rs/';
+    const url = `https://lobste.rs/page/${page}`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -14,19 +19,19 @@ async function fetchLobstersArticles() {
   }
 }
 
-// Generate HTML for Lobsters articles with absolute URLs
-function generateLobstersHTML(html) {
+// Generate HTML for Lobsters articles with absolute URLs and "Load More" button
+function generateLobstersHTML(html, currentPage) {
   const $ = cheerio.load(html);
   const elementsWithClass = $('.u-url');
 
-  return elementsWithClass
+  const articlesHTML = elementsWithClass
     .slice(0, 100)
     .map((i, el) => {
       const link = $(el).attr('href');
-      const isRelativeUrl = link && !link.startsWith('http') && !link.startsWith('https'); // Check if it's a relative URL
+      const isRelativeUrl = link && !link.startsWith('http') && !link.startsWith('https');
 
       if (isRelativeUrl) {
-        const absoluteUrl = `https://lobste.rs/${link}`; // Use the domain name as the base URL
+        const absoluteUrl = `https://lobste.rs/${link}`;
         return `<tr><td><a href="${absoluteUrl}">${$(el).text()}</a></td></tr>`;
       } else {
         return `<tr><td><a href="${link}">${$(el).text()}</a></td></tr>`;
@@ -34,10 +39,16 @@ function generateLobstersHTML(html) {
     })
     .get()
     .join('');
+
+  const proxyServerUrl = '/proxy'; // Adjust the URL if needed
+  let num = parseInt(currentPage);
+  const source = "lobsters";
+  const lobsterButtonHTML = generateLoadMoreButton(proxyServerUrl, source, num, 'replaceLobsterMe', 'Load More...');
+
+  return articlesHTML + lobsterButtonHTML;
 }
 
 module.exports = {
-	fetchLobstersArticles,
-	generateLobstersHTML,
+  fetchLobstersArticles,
+  generateLobstersHTML,
 };
-

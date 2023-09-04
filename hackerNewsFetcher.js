@@ -1,7 +1,7 @@
 // Import necessary libraries and dependencies
 const axios = require('axios');
 const cheerio = require('cheerio');
-
+const generateLoadMoreButton = require('./paginationUtils'); // Adjust the path if necessary
 
 // Define the URL of your proxy server
 const proxyServerUrl = '/proxy'; // Adjust the URL if needed
@@ -48,22 +48,15 @@ async function fetchHackerNewsArticles(page) {
 
     // Check if there are more pages to load
     const hasNextPage = $hackerNews('a.morelink').length > 0;
+    const source = "hackernews";
 
      // If there's a next page, add the "Load More" button with the incremented page number
      if (hasNextPage) {
          let num = parseInt(page); // Convert the string to an integer
-	  const proxyUrl = `${proxyServerUrl}?page=${num + 1}`;
-	  hackerNewsData.push(`
-	    <tr id="replaceMe">
-	      <td>
-		<button class='fetch-button' hx-get="${proxyUrl}"
-			hx-target="#replaceMe"
-			hx-swap="outerHTML">
-		  Load More Articles... <img class="htmx-indicator" src="/bars.svg">
-		</button>
-	      </td>
-	    </tr>
-	  `);
+          const proxyUrl = `${proxyServerUrl}?source=${source}&page=${num + 1}`;
+	  const hackerNewsButtonHTML = generateLoadMoreButton(proxyServerUrl, source, num, 'replaceMe', 'Load More...');
+
+	  hackerNewsData.push(`${hackerNewsButtonHTML}`);
      }
 
     return hackerNewsData;
@@ -74,4 +67,3 @@ async function fetchHackerNewsArticles(page) {
 }
 
 module.exports = fetchHackerNewsArticles;
-

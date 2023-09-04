@@ -26,21 +26,24 @@ const proxyRouter = express.Router();
 // Define a route within the proxy router to handle requests with different page numbers
 proxyRouter.get('/', async (req, res) => {
   try {
-    // Get the URL and page number from the query parameters
-    const { page } = req.query;
+    // Get the source (e.g., "hackernews" or "lobsters") and page number from the query parameters
+    const { source, page } = req.query;
 
-    if (!page) {
-      return res.status(400).json({ error: 'Missing page parameter' });
+    if (!source || !page) {
+      return res.status(400).json({ error: 'Missing source or page parameter' });
     }
-     
-    // console.log("calling hacker news method ", page);
-    // Call the fetchHackerNewsArticles method with the specified page number
-    const articles = await fetchHackerNewsArticles(page);
 
-    // Send the response back to the client
-    // res.json({ articles });
-    // res.json(articles);
-    res.send(`${articles.join('')}`);
+    let articles = [];
+
+    if (source === 'hackernews') {
+      articles = await fetchHackerNewsArticles(page);
+      res.send(`${articles.join('')}`);
+    } else if (source === 'lobsters') {
+      articles = await fetchLobstersArticles(page);
+      res.send(`${generateLobstersHTML(articles, page)}`);
+    } else {
+      return res.status(400).json({ error: 'Invalid source parameter' });
+    }
   } catch (error) {
     console.error('Error proxying request:', error);
     res.status(500).json({ error: 'Error proxying request' });
@@ -62,7 +65,7 @@ app.get('/getNews', async (req, res) => {
 
     const lobstersContent = `
       <tr><th>News 2</th></tr>
-      ${generateLobstersHTML(lobstersHtml)}
+      ${generateLobstersHTML(lobstersHtml, 1)}
     `;
 
     const combinedArticles = cnnArticles.concat(hackerNewsData).concat(lobstersContent);
